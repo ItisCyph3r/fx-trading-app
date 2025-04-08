@@ -8,9 +8,9 @@ import {
   import { Wallet } from './wallet.entity';
   import { User } from '../user/user.entity';
   import { FundWalletDto } from './dto/fund-wallet.dto';
-import { TransactionService } from 'src/transactions/transaction.service';
+import { TransactionService } from '../transactions/transaction.service';
 import { ConvertCurrencyDto } from './dto/convert-currency.dto';
-import { FxService } from 'src/fx/entities/fx.service';
+import { FxService } from '../fx/entities/fx.service';
 import { TradeCurrencyDto, TradeSide } from './dto/trade.dto';
 //   import { TransactionService } from '../transaction/transaction.service';
   

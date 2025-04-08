@@ -1,4 +1,3 @@
-// src/common/guards/role.guard.ts
 import {
     CanActivate,
     ExecutionContext,

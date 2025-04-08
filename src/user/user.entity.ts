@@ -6,12 +6,10 @@ import {
     UpdateDateColumn,
     OneToMany,
   } from 'typeorm';
-//   import { Role } from './rol    e.enum';
-//   import { Transaction } from '../transaction/transaction.entity';
-//   import { Wallet } from '../wallet/wallet.entity';
-import { Role } from 'src/common/enums/role.enum';
-import { Transaction } from 'src/transactions/transaction.entity';
-import { Wallet } from 'src/wallet/wallet.entity';
+
+import { Role } from '../common/enums/role.enum';
+import { Transaction } from '../transactions/transaction.entity';
+import { Wallet } from '../wallet/wallet.entity';
   
   @Entity()
   export class User {

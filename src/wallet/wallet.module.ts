@@ -3,9 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { WalletService } from './wallet.service';
 import { WalletController } from './wallet.controller';
 import { Wallet } from './wallet.entity';
-import { TransactionModule } from 'src/transactions/transaction.module';
-import { FxModule } from 'src/fx/entities/fx.module';
-import { UserModule } from 'src/user/user.module'; // Add this import
+import { TransactionModule } from '../transactions/transaction.module';
+import { FxModule } from '../fx/entities/fx.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [

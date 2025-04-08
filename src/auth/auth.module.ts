@@ -6,15 +6,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { User } from 'src/user/user.entity';
+import { User } from '..//user/user.entity';
 import { AuthOtp } from './entities/auth-otp.entity';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { WalletModule } from 'src/wallet/wallet.module'; // Add this import
-import { Wallet } from 'src/wallet/wallet.entity'; // Add this import
+import { WalletModule } from '..//wallet/wallet.module'; 
+import { Wallet } from '..//wallet/wallet.entity'; 
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, AuthOtp, Wallet]), // Add Wallet here
+    TypeOrmModule.forFeature([User, AuthOtp, Wallet]),
     PassportModule,
     WalletModule, // Add this to import the WalletModule
     JwtModule.registerAsync({

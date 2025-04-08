@@ -6,21 +6,19 @@ import * as bcrypt from 'bcryptjs';
 import * as nodemailer from 'nodemailer';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuid } from 'uuid';
-
-// Import entities
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 import { AuthOtp } from './entities/auth-otp.entity';
 import { RegisterDto } from './dto/register.dto';
 import { ResendOtpDto, VerifyOtpDto } from './dto/verify-otp.dto';
 import { LoginDto } from './dto/login.dto';
-import { Wallet } from 'src/wallet/wallet.entity';  // Import Wallet entity
+import { Wallet } from '../wallet/wallet.entity'; 
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(AuthOtp) private otpRepo: Repository<AuthOtp>,
-    @InjectRepository(Wallet) private walletRepo: Repository<Wallet>,  // Inject Wallet repository
+    @InjectRepository(Wallet) private walletRepo: Repository<Wallet>, 
     private config: ConfigService,
     private jwtService: JwtService,
   ) {}
