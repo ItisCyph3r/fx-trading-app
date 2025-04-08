@@ -1,98 +1,238 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# FX Trading Platform
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A scalable, secure, and modular NestJS-based backend system for currency exchange and trading.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- **User Authentication**: Secure registration, login, and email verification
+- **Wallet Management**: Create and manage currency wallets
+- **Currency Conversion**: Convert between different currencies with real-time rates
+- **Trading Functionality**: Buy and sell currencies with customizable spread
+- **Transaction History**: Track all financial operations with detailed records
+- **Exchange Rate Management**: Integration with external FX API with caching
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## System Architecture
 
-## Project setup
+The application follows a modular architecture based on NestJS best practices:
 
-```bash
-$ npm install
+- **Modules**: Separate domains into modules (Auth, User, Wallet, Transaction, FX)
+- **Controllers**: Handle HTTP requests and route them to appropriate services
+- **Services**: Implement business logic and domain-specific operations
+- **Entities**: Define database models and relationships
+- **DTOs**: Validate incoming data and define request/response contracts
+- **Guards**: Implement authorization and role-based access control
+
+### Key Components
+
+- **Auth Module**: Handles user registration, login, and token management
+- **User Module**: Manages user profiles and permissions
+- **Wallet Module**: Manages currency wallets and balance operations
+- **Transaction Module**: Records and retrieves financial operations
+- **FX Module**: Manages currency exchange rates with caching
+
+## Technical Stack
+
+- **Framework**: NestJS
+- **Database**: PostgreSQL
+- **ORM**: TypeORM
+- **Authentication**: JWT
+- **Validation**: class-validator
+- **API Documentation**: Swagger
+- **Email Service**: Nodemailer
+- **External API**: ExchangeRate API
+
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- PostgreSQL
+- npm or yarn
+
+### Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```
+# App
+PORT=5000
+NODE_ENV=development
+
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_NAME=fx_trading
+
+# JWT
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=7d
+
+# Email
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_email_app_password
+
+# FX API
+FX_API_KEY=your_exchangerate_api_key
 ```
 
-## Compile and run the project
+### Installation
 
-```bash
-# development
-$ npm run start
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/fx-trading-platform.git
+   cd fx-trading-platform
+   ```
 
-# watch mode
-$ npm run start:dev
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-# production mode
-$ npm run start:prod
+3. Start the PostgreSQL database
+
+4. Run the application:
+   ```bash
+   npm run start:dev
+   ```
+
+5. Access the Swagger documentation at:
+   ```
+   http://localhost:5000/api-docs
+   ```
+
+## API Documentation
+
+### Authentication
+
+#### Register a new user
+```
+POST /auth/register
+Body: { "email": "user@example.com", "password": "password123" }
 ```
 
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+#### Verify email with OTP
+```
+POST /auth/verify
+Body: { "email": "user@example.com", "otp": "1234" }
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
+#### Resend OTP
+```
+POST /auth/resend-otp
+Body: { "email": "user@example.com" }
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+#### Login
+```
+POST /auth/login
+Body: { "email": "user@example.com", "password": "password123" }
+```
 
-## Resources
+### Wallet Management
 
-Check out a few resources that may come in handy when working with NestJS:
+#### Get user wallets
+```
+GET /wallet
+Headers: { "Authorization": "Bearer {token}" }
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+#### Fund wallet
+```
+POST /wallet/fund
+Headers: { "Authorization": "Bearer {token}" }
+Body: { "currency": "NGN", "amount": 10000 }
+```
 
-## Support
+#### Convert currency
+```
+POST /wallet/convert
+Headers: { "Authorization": "Bearer {token}" }
+Body: { "fromCurrency": "NGN", "toCurrency": "USD", "amount": 1000 }
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### Trade currency
+```
+POST /wallet/trade
+Headers: { "Authorization": "Bearer {token}" }
+Body: { "baseCurrency": "NGN", "quoteCurrency": "USD", "amount": 1000, "side": "BUY" }
+```
 
-## Stay in touch
+### FX Rates
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+#### Get specific rate
+```
+GET /fx/rate?base=USD&target=NGN
+Headers: { "Authorization": "Bearer {token}" }
+```
 
-## License
+#### Get all rates
+```
+GET /fx/rates?base=USD
+Headers: { "Authorization": "Bearer {token}" }
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Transactions
+
+#### Get transactions
+```
+GET /transactions?type=FUNDING&currency=NGN&from=2023-01-01&to=2023-12-31&page=1&limit=10
+Headers: { "Authorization": "Bearer {token}" }
+```
+
+## Architectural Decisions
+
+### Database Schema
+
+The system uses a relational database with the following key entities:
+- **User**: Stores user accounts and authentication information
+- **Wallet**: Manages currency balances for each user
+- **Transaction**: Records all financial operations
+- **FxRate**: Caches exchange rates to reduce API calls
+
+### Security Measures
+
+1. **Request Validation**: All incoming requests are validated using DTOs and class-validator
+2. **Transaction Atomicity**: Database transactions ensure ACID properties for financial operations
+3. **Role-Based Access**: Guards ensure users can only access their own data
+4. **Password Hashing**: Passwords are securely hashed with bcrypt
+5. **JWT Authentication**: Secure token-based authentication
+
+### Scalability Considerations
+
+1. **Rate Caching**: FX rates are cached to reduce external API calls
+2. **Pagination**: List endpoints support pagination for performance
+3. **Modular Architecture**: Easy to extend with new modules or features
+4. **Database Indexes**: Proper indexes for frequently queried fields
+
+## Key Assumptions
+
+1. **Currency Support**: The system initially supports major currencies, but can be extended
+2. **Transaction Types**: Four types of transactions are supported: FUNDING, WITHDRAWAL, TRADE, CONVERSION
+3. **User Roles**: Two roles are supported: USER and ADMIN
+4. **Initial Balance**: New users receive 1000 NGN upon registration
+5. **Trading Spread**: A 2% spread is applied to trading operations
+
+## Testing
+
+Run the test suite with:
+
+```bash
+npm test
+```
+
+Key areas covered by tests:
+- Wallet balance management
+- Currency conversion logic
+- Trading operations
+- Transaction recording
+- Authentication flow
+
+## Future Enhancements
+
+1. **Additional Payment Methods**: Integration with payment gateways
+2. **Advanced Trading Features**: Limit orders, stop losses
+3. **Push Notifications**: Real-time alerts for transactions
+4. **Analytics Dashboard**: Visualize trading performance
+5. **Two-Factor Authentication**: Enhance security for sensitive operations
