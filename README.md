@@ -6,6 +6,10 @@ A scalable, secure, and modular NestJS-based backend system for currency exchang
 
 https://documenter.getpostman.com/view/19965916/2sB2cVgNZ5
 
+## App Flow
+
+
+
 ## Features
 
 - **User Authentication**: Secure registration, login, and email verification
