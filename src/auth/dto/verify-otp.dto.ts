@@ -8,3 +8,9 @@ export class VerifyOtpDto {
   @Length(4, 6)
   otp: string;
 }
+
+
+export class ResendOtpDto {
+    @IsEmail()
+    email: string;
+}
