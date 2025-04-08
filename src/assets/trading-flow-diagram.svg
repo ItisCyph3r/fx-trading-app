@@ -1,0 +1,122 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa" />
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial" font-size="24" text-anchor="middle" font-weight="bold">FX Trading System Architecture</text>
+  
+  <!-- Components -->
+  <!-- Auth Module -->
+  <rect x="50" y="100" width="150" height="100" rx="10" fill="#e6f7ff" stroke="#1890ff" stroke-width="2" />
+  <text x="125" y="140" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Auth Module</text>
+  <text x="125" y="165" font-family="Arial" font-size="12" text-anchor="middle">Register, Login, Verify</text>
+  
+  <!-- User Module -->
+  <rect x="50" y="250" width="150" height="100" rx="10" fill="#e6f7ff" stroke="#1890ff" stroke-width="2" />
+  <text x="125" y="290" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">User Module</text>
+  <text x="125" y="315" font-family="Arial" font-size="12" text-anchor="middle">Profile, Roles, Guards</text>
+  
+  <!-- Wallet Module -->
+  <rect x="325" y="100" width="150" height="100" rx="10" fill="#f6ffed" stroke="#52c41a" stroke-width="2" />
+  <text x="400" y="140" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Wallet Module</text>
+  <text x="400" y="165" font-family="Arial" font-size="12" text-anchor="middle">Fund, Check Balance</text>
+  
+  <!-- Transaction Module -->
+  <rect x="325" y="250" width="150" height="100" rx="10" fill="#f6ffed" stroke="#52c41a" stroke-width="2" />
+  <text x="400" y="290" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Transaction Module</text>
+  <text x="400" y="315" font-family="Arial" font-size="12" text-anchor="middle">Record, History</text>
+  
+  <!-- FX Module -->
+  <rect x="600" y="175" width="150" height="100" rx="10" fill="#fff2e8" stroke="#fa8c16" stroke-width="2" />
+  <text x="675" y="215" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">FX Module</text>
+  <text x="675" y="240" font-family="Arial" font-size="12" text-anchor="middle">Exchange Rates API</text>
+  
+  <!-- Database -->
+  <rect x="325" y="450" width="150" height="80" rx="10" fill="#f0f5ff" stroke="#2f54eb" stroke-width="2" />
+  <text x="400" y="490" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">PostgreSQL</text>
+  <text x="400" y="510" font-family="Arial" font-size="12" text-anchor="middle">TypeORM</text>
+  
+  <!-- External API -->
+  <rect x="600" y="450" width="150" height="80" rx="10" fill="#fff0f6" stroke="#eb2f96" stroke-width="2" />
+  <text x="675" y="490" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">ExchangeRate API</text>
+  <text x="675" y="510" font-family="Arial" font-size="12" text-anchor="middle">External Service</text>
+  
+  <!-- Connections -->
+  <!-- Auth to User -->
+  <line x1="125" y1="200" x2="125" y2="250" stroke="#1890ff" stroke-width="2" />
+  
+  <!-- Auth to Wallet -->
+  <line x1="200" y1="150" x2="325" y2="150" stroke="#1890ff" stroke-width="2" />
+  <polygon points="320,155 330,150 320,145" fill="#1890ff" />
+  
+  <!-- User to Wallet -->
+  <line x1="200" y1="275" x2="325" y2="183" stroke="#1890ff" stroke-width="2" />
+  <polygon points="320,188 325,180 315,183" fill="#1890ff" />
+  
+  <!-- Wallet to Transaction -->
+  <line x1="400" y1="200" x2="400" y2="250" stroke="#52c41a" stroke-width="2" />
+  <polygon points="395,245 400,250 405,245" fill="#52c41a" />
+  
+  <!-- Wallet to FX -->
+  <line x1="475" y1="150" x2="600" y2="203" stroke="#fa8c16" stroke-width="2" />
+  <polygon points="595,208 600,200 590,203" fill="#fa8c16" />
+  
+  <!-- Transaction to Database -->
+  <line x1="400" y1="350" x2="400" y2="450" stroke="#2f54eb" stroke-width="2" />
+  <polygon points="395,445 400,450 405,445" fill="#2f54eb" />
+  
+  <!-- Wallet to Database -->
+  <line x1="350" y1="200" x2="350" y2="450" stroke="#2f54eb" stroke-width="2" />
+  <polygon points="345,445 350,450 355,445" fill="#2f54eb" />
+  
+  <!-- User to Database -->
+  <line x1="125" y1="350" x2="125" y2="490" stroke="#2f54eb" stroke-width="2" />
+  <line x1="125" y1="490" x2="325" y2="490" stroke="#2f54eb" stroke-width="2" />
+  <polygon points="320,495 325,490 320,485" fill="#2f54eb" />
+  
+  <!-- FX to External API -->
+  <line x1="675" y1="275" x2="675" y2="450" stroke="#eb2f96" stroke-width="2" />
+  <polygon points="670,445 675,450 680,445" fill="#eb2f96" />
+  
+  <!-- FX to Database -->
+  <line x1="600" y1="240" x2="450" y2="450" stroke="#eb2f96" stroke-width="2" />
+  <polygon points="455,445 450,450 445,445" fill="#eb2f96" />
+  
+  <!-- Process Flows -->
+  <!-- Trading Flow -->
+  <rect x="50" y="400" width="700" height="30" rx="5" fill="#fff1f0" stroke="#f5222d" stroke-width="1" />
+  <text x="400" y="420" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Trading Process Flow</text>
+  
+  <rect x="50" y="430" width="85" height="25" rx="5" fill="#fff1f0" stroke="#f5222d" stroke-width="1" />
+  <text x="92" y="447" font-family="Arial" font-size="12" text-anchor="middle">Auth</text>
+  
+  <rect x="140" y="430" width="85" height="25" rx="5" fill="#fff1f0" stroke="#f5222d" stroke-width="1" />
+  <text x="182" y="447" font-family="Arial" font-size="12" text-anchor="middle">Validate</text>
+  
+  <rect x="230" y="430" width="85" height="25" rx="5" fill="#fff1f0" stroke="#f5222d" stroke-width="1" />
+  <text x="272" y="447" font-family="Arial" font-size="12" text-anchor="middle">Get Rate</text>
+  
+  <rect x="320" y="430" width="85" height="25" rx="5" fill="#fff1f0" stroke="#f5222d" stroke-width="1" />
+  <text x="362" y="447" font-family="Arial" font-size="12" text-anchor="middle">Apply Spread</text>
+  
+  <rect x="410" y="430" width="85" height="25" rx="5" fill="#fff1f0" stroke="#f5222d" stroke-width="1" />
+  <text x="452" y="447" font-family="Arial" font-size="12" text-anchor="middle">TX Begin</text>
+  
+  <rect x="500" y="430" width="85" height="25" rx="5" fill="#fff1f0" stroke="#f5222d" stroke-width="1" />
+  <text x="542" y="447" font-family="Arial" font-size="12" text-anchor="middle">Update Balances</text>
+  
+  <rect x="590" y="430" width="85" height="25" rx="5" fill="#fff1f0" stroke="#f5222d" stroke-width="1" />
+  <text x="632" y="447" font-family="Arial" font-size="12" text-anchor="middle">Record TX</text>
+  
+  <rect x="680" y="430" width="70" height="25" rx="5" fill="#fff1f0" stroke="#f5222d" stroke-width="1" />
+  <text x="715" y="447" font-family="Arial" font-size="12" text-anchor="middle">Commit</text>
+  
+  <!-- Arrows between steps -->
+  <line x1="135" y1="442" x2="140" y2="442" stroke="#f5222d" stroke-width="1" />
+  <line x1="225" y1="442" x2="230" y2="442" stroke="#f5222d" stroke-width="1" />
+  <line x1="315" y1="442" x2="320" y2="442" stroke="#f5222d" stroke-width="1" />
+  <line x1="405" y1="442" x2="410" y2="442" stroke="#f5222d" stroke-width="1" />
+  <line x1="495" y1="442" x2="500" y2="442" stroke="#f5222d" stroke-width="1" />
+  <line x1="585" y1="442" x2="590" y2="442" stroke="#f5222d" stroke-width="1" />
+  <line x1="675" y1="442" x2="680" y2="442" stroke="#f5222d" stroke-width="1" />
+</svg>
