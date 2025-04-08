@@ -8,7 +8,7 @@ https://documenter.getpostman.com/view/19965916/2sB2cVgNZ5
 
 ## App Flow
 
-
+https://github.com/ItisCyph3r/fx-trading-app/blob/main/src/assets/trading-flow-diagram.svg
 
 ## Features
 
