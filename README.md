@@ -2,6 +2,10 @@
 
 A scalable, secure, and modular NestJS-based backend system for currency exchange and trading.
 
+## Postman Documentation
+
+https://documenter.getpostman.com/view/19965916/2sB2cVgNZ5
+
 ## Features
 
 - **User Authentication**: Secure registration, login, and email verification
