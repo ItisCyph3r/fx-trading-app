@@ -10,7 +10,7 @@ import {
   import { FundWalletDto } from './dto/fund-wallet.dto';
 import { TransactionService } from '../transactions/transaction.service';
 import { ConvertCurrencyDto } from './dto/convert-currency.dto';
-import { FxService } from '../fx/entities/fx.service';
+import { FxService } from '../fx/fx.service';
 import { TradeCurrencyDto, TradeSide } from './dto/trade.dto';
 //   import { TransactionService } from '../transaction/transaction.service';
   

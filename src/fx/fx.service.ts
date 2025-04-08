@@ -3,7 +3,7 @@ import { MoreThan, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { subMinutes } from 'date-fns';
-import { FxRate } from './fx-rate.entity';
+import { FxRate } from './entities/fx-rate.entity';
 import { HttpService } from '@nestjs/axios';
 import { CACHE_TTL_MINUTES } from './fx.constants';
 // import { HttpService } from '@nestjs/common'; // Corrected import

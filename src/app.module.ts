@@ -12,7 +12,7 @@ import { TransactionModule } from './transactions/transaction.module';
 
 // Import HttpModule from @nestjs/axios (NOT HttpService)
 import { HttpModule } from '@nestjs/axios';
-import { FxModule } from './fx/entities/fx.module';
+import { FxModule } from './fx/fx.module';
 
 @Module({
   imports: [

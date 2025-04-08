@@ -5,7 +5,7 @@ import { FxController } from './fx.controller';
 // import { FxRate } from './entities/fx-rate.entity';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { FxRate } from './fx-rate.entity';
+import { FxRate } from './entities/fx-rate.entity';
 
 @Module({
   imports: [
