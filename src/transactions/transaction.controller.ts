@@ -1,37 +1,21 @@
-// import { Query } from '@nestjs/common';
-
-// @Get()
-// async getTransactions(@Req() req, @Query() query) {
-//   return this.txService.getUserTransactions(req.user.userId, query);
-// }
-
-import {
-    Controller,
-    Get,
-    Query,
-    Req,
-    UseGuards,
-  } from '@nestjs/common';
+import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import { Role } from 'src/common/enums/role.enum';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { Roles } from 'src/common/decorators/roles.decorators';
-//   import { TransactionService } from './transaction.service';
-//   import { Roles } from 'src/common/decorators/roles.decorator';
-//   import { Role } from 'src/common/enums/role.enum';
-//   import { RolesGuard } from 'src/common/guards/roles.guard';
-  
-  @Controller('transactions')
-  @UseGuards(RolesGuard)
-  export class TransactionController {
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorators';
+import { Role } from '../common/enums/role.enum';
+import { GetTransactionQuery } from './dto/transactions.dto';
+// import { GetTransactionQuery } from './dto/get-transaction-query.dto';
+
+@Controller('transactions')
+@UseGuards(JwtAuthGuard, RolesGuard)
+export class TransactionController {
     constructor(private readonly txService: TransactionService) {}
-  
+
     @Get()
     @Roles(Role.ADMIN, Role.USER)
-    async getTransactions(@Req() req, @Query() query) {
-      const userId =
-        req.user.role === Role.ADMIN ? undefined : req.user.userId;
-      return this.txService.getUserTransactions(userId, query);
+    async getTransactions(@Req() req, @Query() query: GetTransactionQuery) {
+        const userId = req.user.role === Role.ADMIN ? undefined : req.user.userId;
+        return this.txService.getUserTransactions(userId, query);
     }
-  }
-  
+}

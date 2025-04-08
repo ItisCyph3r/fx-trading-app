@@ -27,6 +27,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
-  await app.listen(3000);
+  const port = process.env.PORT || 5000; // Change default port to 5000
+  await app.listen(port);
+  console.log(`Application running on port ${port}`);
 }
 bootstrap();
