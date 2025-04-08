@@ -3,8 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { WalletService } from './wallet.service';
 import { WalletController } from './wallet.controller';
 import { Wallet } from './wallet.entity';
-import { TransactionModule } from '../transaction/transaction.module';
-import { FxModule } from '../fx/fx.module';
+import { TransactionModule } from 'src/transactions/transaction.module';
+import { FxModule } from 'src/fx/entities/fx.module';
+// import { TransactionModule } from '../transaction/transaction.module';
+// import { FxModule } from '../fx/fx.module';
 
 @Module({
   imports: [

@@ -40,7 +40,7 @@ import { TransactionModule } from './transactions/transaction.module';
     UserModule,
     WalletModule,
     FxModule,
-    TradeModule,
+    // TradeModule,
     TransactionModule,
     HttpService
   ],

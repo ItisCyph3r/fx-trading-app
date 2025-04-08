@@ -1,11 +1,14 @@
 // import { Injectable, HttpService, Inject, CACHE_MANAGER } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { FxRate } from './entities/fx-rate.entity';
+import { MoreThan, Repository } from 'typeorm';
+// import { FxRate } from './entities/fx-rate.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { CACHE_TTL_MINUTES } from './fx.constants';
+// import { CACHE_TTL_MINUTES } from './fx.constants';
 import { subMinutes } from 'date-fns';
 import { Injectable } from '@nestjs/common';
+import { FxRate } from './fx-rate.entity';
+import { CACHE_TTL_MINUTES } from './fx.constants';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class FxService {
