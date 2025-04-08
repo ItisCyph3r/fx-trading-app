@@ -4,8 +4,8 @@ import { WalletService } from './wallet.service';
 import { WalletController } from './wallet.controller';
 import { Wallet } from './wallet.entity';
 import { TransactionModule } from '../transactions/transaction.module';
-import { FxModule } from '../fx/entities/fx.module';
 import { UserModule } from '../user/user.module';
+import { FxModule } from 'src/fx/fx.module';
 
 @Module({
   imports: [
