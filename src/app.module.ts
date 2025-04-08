@@ -13,6 +13,7 @@ import { TransactionModule } from './transactions/transaction.module';
 // Import HttpModule from @nestjs/axios (NOT HttpService)
 import { HttpModule } from '@nestjs/axios';
 import { FxModule } from './fx/fx.module';
+import * as crypto from 'crypto';
 
 @Module({
   imports: [
