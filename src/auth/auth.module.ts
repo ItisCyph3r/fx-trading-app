@@ -9,14 +9,14 @@ import { AuthController } from './auth.controller';
 import { User } from 'src/user/user.entity';
 import { AuthOtp } from './entities/auth-otp.entity';
 import { JwtStrategy } from './strategies/jwt.strategy';
-// import { JwtStrategy } from './strategies/jwt.strategy';
-// import { User } from '../user/user.entity';
-// import { AuthOtp } from './entities/auth-otp.entity';
+import { WalletModule } from 'src/wallet/wallet.module'; // Add this import
+import { Wallet } from 'src/wallet/wallet.entity'; // Add this import
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, AuthOtp]),
+    TypeOrmModule.forFeature([User, AuthOtp, Wallet]), // Add Wallet here
     PassportModule,
+    WalletModule, // Add this to import the WalletModule
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
