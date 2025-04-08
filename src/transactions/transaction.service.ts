@@ -7,7 +7,6 @@ import { GetTransactionQuery } from './dto/transactions.dto';
 
 @Injectable()
 export class TransactionService {
-    // private readonly logger = new Logger(TransactionService.name);
 
     constructor(
         @InjectRepository(Transaction)
@@ -15,7 +14,7 @@ export class TransactionService {
     ) {}
 
     async getUserTransactions(userId: string, query: GetTransactionQuery) {
-        // this.logger.debug(`Fetching transactions for user ${userId}`);
+
         
         const {
             type,
@@ -45,8 +44,6 @@ export class TransactionService {
                 relations: ['user'],
             });
 
-            // this.logger.debug(`Found ${total} transactions`);
-
             return {
                 data: items,
                 meta: {
@@ -57,7 +54,7 @@ export class TransactionService {
                 },
             };
         } catch (error) {
-            // this.logger.error(`Error fetching transactions: ${error.message}`);
+    
             throw error;
         }
     }
@@ -70,13 +67,13 @@ export class TransactionService {
                 createdAt: new Date(),
             });
             
-            // this.logger.debug(`Creating transaction: ${JSON.stringify(transactionDetails)}`);
+    
             const saved = await queryRunner.manager.save(Transaction, transaction);
-            // this.logger.debug(`Transaction created with ID: ${saved.id}`);
+    
             
             return saved;
         } catch (error) {
-            // this.logger.error(`Error creating transaction: ${error.message}`);
+    
             throw error;
         }
     }

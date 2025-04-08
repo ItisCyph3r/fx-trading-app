@@ -57,12 +57,12 @@ import { FxService } from 'src/fx/entities/fx.service';
         await queryRunner.manager.save(wallet);
   
         await this.txService.createTransaction(queryRunner, {
-          user,
-          amount: dto.amount,
-          currency: dto.currency,
-          type: 'FUNDING',
-          status: 'SUCCESS',
-          note: 'Wallet funded via NGN',
+            user,
+            amount: dto.amount,
+            currency: dto.currency,
+            type: 'FUNDING',
+            status: 'SUCCESS',
+            note: 'Wallet funded via NGN',
         });
   
         await queryRunner.commitTransaction();
@@ -124,6 +124,9 @@ import { FxService } from 'src/fx/entities/fx.service';
             type: 'CONVERSION',
             status: 'SUCCESS',
             note: `Converted to ${convertedAmount} ${dto.toCurrency}`,
+            fromCurrency: dto.fromCurrency,  // Add this
+            toCurrency: dto.toCurrency,      // Add this
+            rate: rate, // Add this   
           });
       
           await queryRunner.commitTransaction();
