@@ -5,6 +5,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
+import crypto from 'crypto';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
