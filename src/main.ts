@@ -7,8 +7,11 @@ import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: process.env.NODE_ENV === 'production' ? ['error', 'warn'] : ['log', 'error', 'warn', 'debug', 'verbose'],
+  });
   const configService = app.get(ConfigService);
+  const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env';
   const isProduction = configService.get('NODE_ENV') === 'production';
 
   // Enable CORS
@@ -23,6 +26,10 @@ async function bootstrap() {
     }),
   );
 
+  if (isProduction) {
+    app.useLogger(['error', 'warn']); 
+    console.log = () => {}; // Disable console.log in production
+  }
   // Test database connection
   try {
     const connection = app.get(DataSource);
@@ -53,8 +60,21 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
+
+  process.on('SIGTERM', async () => {
+    console.log('Received SIGTERM - Graceful shutdown...');
+    await app.close();
+    process.exit(0);
+  });
+
+  process.on('SIGINT', async () => {
+    console.log('Received SIGINT - Graceful shutdown...');
+    await app.close();
+    process.exit(0);
+  });
+
   // Set port based on environment
-  const port = isProduction ? 6000 : (process.env.PORT || 5000);
+  const port = isProduction ? (process.env.PORT || 6000) : (process.env.PORT || 5000);
   await app.listen(port);
   console.log(`Application running in ${isProduction ? 'production' : 'development'} mode on port ${port}`);
 }

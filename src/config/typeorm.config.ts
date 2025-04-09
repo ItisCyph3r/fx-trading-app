@@ -15,11 +15,9 @@ export const typeOrmConfig = async (
     database: configService.get('DB_NAME'),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     synchronize: !isProduction,
-    ...(isProduction && {
-      ssl: {
-        rejectUnauthorized: false
-      }
-    }),
+    ssl: isProduction ? {
+      rejectUnauthorized: false
+    } : false,  // Disable SSL in non-production environments
     extra: {
       max: 20,
       connectionTimeoutMillis: 10000

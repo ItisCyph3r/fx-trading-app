@@ -73,9 +73,8 @@ async sendOtpEmail(email: string) {
         return otp;
     } catch (error) {
         console.error('Email sending failed:', error);
-        
-        // Still save the OTP even if email fails
-        // This allows for development/testing without email
+        throw new Error(`Email service error: ${error.message}`);
+
         return otp;
     }
 }
