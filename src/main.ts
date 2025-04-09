@@ -4,9 +4,12 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { DataSource } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+  const isProduction = configService.get('NODE_ENV') === 'production';
 
   // Enable CORS
   app.enableCors();
@@ -50,8 +53,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
-  const port = process.env.PORT || 5000;
+  // Set port based on environment
+  const port = isProduction ? 6000 : (process.env.PORT || 5000);
   await app.listen(port);
-  console.log(`Application running on port ${port}`);
+  console.log(`Application running in ${isProduction ? 'production' : 'development'} mode on port ${port}`);
 }
 bootstrap();
