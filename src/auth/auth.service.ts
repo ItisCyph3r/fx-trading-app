@@ -35,27 +35,6 @@ export class AuthService {
     return { message: 'User created. OTP sent to email.' };
   }
 
-//   async sendOtpEmail(email: string) {
-//     const otp = Math.floor(1000 + Math.random() * 9000).toString();
-//     await this.otpRepo.save(this.otpRepo.create({ email, otp }));
-
-//     const transporter = nodemailer.createTransport({
-//       service: 'gmail',
-//       auth: {
-//         user: this.config.get('EMAIL_USER'),
-//         pass: this.config.get('EMAIL_PASS'),
-//       },
-//     });
-
-//     await transporter.sendMail({
-//       from: `"FX Trading App" <${this.config.get('EMAIL_USER')}>`,
-//       to: email,
-//       subject: 'Verify your email',
-//       text: `Your OTP is: ${otp}`,
-//     });
-//   }
-
-
 async sendOtpEmail(email: string) {
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
     
@@ -64,8 +43,8 @@ async sendOtpEmail(email: string) {
         await this.otpRepo.save(this.otpRepo.create({ email, otp }));
 
         const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com', // Explicitly set the host
-            port: 587, // Use TLS port
+            host: this.config.get('EMAIL_HOST'),
+            port: this.config.get('EMAIL_PORT'),
             secure: false, // Use TLS
             auth: {
                 user: this.config.get('EMAIL_USER'),

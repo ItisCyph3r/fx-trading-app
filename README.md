@@ -57,33 +57,10 @@ The application follows a modular architecture based on NestJS best practices:
 - PostgreSQL
 - npm or yarn
 
-### Environment Variables
-
-Create a `.env` file in the root directory with the following variables:
-
-```
-# App
-PORT=5000
-NODE_ENV=development
-
-# Database
-DB_HOST=localhost
-DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=your_password
-DB_NAME=fx_trading
-
-# JWT
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRES_IN=7d
-
-# Email
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_email_app_password
-
-# FX API
-FX_API_KEY=your_exchangerate_api_key
-```
+### Environment Setup
+1. Copy `.env.example` to `.env`
+2. Update the values in `.env` with your credentials
+3. Never commit `.env` to version control
 
 ### Installation
 
