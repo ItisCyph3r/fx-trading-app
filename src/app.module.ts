@@ -14,6 +14,8 @@ import { TransactionModule } from './transactions/transaction.module';
 import { HttpModule } from '@nestjs/axios';
 import { FxModule } from './fx/fx.module';
 import * as crypto from 'crypto';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisConfig } from './config/redis.config';
 
 @Module({
   imports: [
@@ -23,13 +25,17 @@ import * as crypto from 'crypto';
       inject: [ConfigService],
       useFactory: typeOrmConfig,
     }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      imports: [ConfigModule],
+      useFactory: redisConfig,
+      inject: [ConfigService],
+    }),
     AuthModule,
     UserModule,
     WalletModule,
     FxModule,
     TransactionModule,
-    
-    // Add HttpModule here
     HttpModule,
   ],
 })
