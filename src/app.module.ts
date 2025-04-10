@@ -16,6 +16,7 @@ import { FxModule } from './fx/fx.module';
 import * as crypto from 'crypto';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisConfig } from './config/redis.config';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -39,5 +40,6 @@ import { redisConfig } from './config/redis.config';
     TransactionModule,
     HttpModule,
   ],
+  controllers: [AppController]
 })
 export class AppModule {}
