@@ -221,3 +221,75 @@ Key areas covered by tests:
 3. **Push Notifications**: Real-time alerts for transactions
 4. **Analytics Dashboard**: Visualize trading performance
 5. **Two-Factor Authentication**: Enhance security for sensitive operations
+
+## Testing
+
+### Overview
+The application uses Jest as the testing framework with comprehensive test coverage for core functionalities.
+
+### Test Categories
+
+1. **Unit Tests**
+   - Controller tests
+   - Service tests 
+   - Entity validation tests
+   - DTO validation tests
+
+2. **Integration Tests**
+   - Database operations
+   - External API interactions
+   - Transaction flows
+
+### Key Test Coverage Areas
+
+1. **Authentication**
+   - User registration
+   - Login flows
+   - OTP verification
+   - JWT token validation
+
+2. **Wallet Operations**
+   - Wallet creation
+   - Balance updates
+   - Currency conversion
+   - Trading operations
+
+3. **Transaction Management**
+   - Transaction creation
+   - Transaction history retrieval
+   - Pagination and filtering
+
+4. **FX Operations**
+   - Rate fetching
+   - Rate caching
+   - Rate conversion calculations
+
+### Test Mocks
+
+The test suite includes comprehensive mocks for:
+- Database entities
+- External API responses
+- User data
+- Wallet data
+- Transaction data
+- FX rates
+
+Example mock data:
+```typescript
+export const mockWallet = {
+    id: '123e4567-e89b-12d3-a456-426614174001',
+    user: mockUser,
+    currency: 'NGN',
+    balance: 1000
+};
+
+export const mockTradeWallets = {
+    USD: {
+        balance: 1000000,
+        currency: 'USD'
+    },
+    NGN: {
+        balance: 200000,
+        currency: 'NGN'
+    }
+};
