@@ -7,7 +7,7 @@ import { User } from '../user/user.entity';
 import { TransactionService } from '../transactions/transaction.service';
 import { FxService } from '../fx/fx.service';
 import { BadRequestException } from '@nestjs/common';
-import { mockUser, mockWallet, mockTransaction } from '../test/mock/index';
+import { mockUser, mockWallet, mockTransaction, mockTradeWallets } from '../test/mock/index';
 import { TradeSide } from './dto/trade.dto';
 
 describe('WalletService', () => {
@@ -173,49 +173,71 @@ describe('WalletService', () => {
     });
   });
 
-  describe('tradeCurrency', () => {
+
+describe('tradeCurrency', () => {
     const tradeDto = {
       baseCurrency: 'NGN',
       quoteCurrency: 'USD',
-      amount: 1000,
+      amount: 1000, // Want to buy 1000 NGN
       side: TradeSide.BUY
     };
 
+    beforeEach(() => {
+      // Mock FX rate for consistent testing
+      (fxService.getRate as jest.Mock).mockResolvedValue(780.50);
+    });
+
     it('should execute buy trade successfully', async () => {
       mockQueryRunner.manager.findOneOrFail.mockResolvedValue(mockUser);
+
+      // For BUY NGN/USD pair:
+      // Base amount: 1000 NGN
+      // Rate: 780.50 NGN/USD
+      // Required USD = 1000 / 780.50 ≈ 1.28 USD
+      // Add 2% spread: 1.28 * 1.02 ≈ 1.31 USD needed
       mockQueryRunner.manager.findOne
         .mockResolvedValueOnce({
           ...mockWallet,
-          balance: 2000,
-          currency: 'NGN'
+          currency: 'USD',
+          balance: 2 // More than enough to cover 1.31 USD needed
         })
         .mockResolvedValueOnce({
           ...mockWallet,
-          balance: 0,
-          currency: 'USD'
+          currency: 'NGN',
+          balance: 0
         });
+
+      mockQueryRunner.manager.save.mockResolvedValue({
+        ...mockWallet,
+        balance: 1000 // Updated balance after trade
+      });
 
       const result = await service.tradeCurrency(mockUser.id, tradeDto);
 
       expect(result).toHaveProperty('message', 'Trade executed successfully');
       expect(result).toHaveProperty('side', TradeSide.BUY);
-      expect(result).toHaveProperty('baseAmount');
+      expect(result).toHaveProperty('baseAmount', 1000);
       expect(result).toHaveProperty('quoteAmount');
       expect(result).toHaveProperty('rate');
+      expect(mockQueryRunner.manager.save).toHaveBeenCalled();
     });
 
     it('should execute sell trade successfully', async () => {
       mockQueryRunner.manager.findOneOrFail.mockResolvedValue(mockUser);
+      
+      // For SELL NGN/USD:
+      // First mock: NGN wallet (fromWallet) - needs sufficient balance
+      // Second mock: USD wallet (toWallet) - receives the sold amount
       mockQueryRunner.manager.findOne
         .mockResolvedValueOnce({
           ...mockWallet,
-          balance: 1000,
-          currency: 'NGN'
+          currency: 'NGN',
+          balance: 2000 // Ensure sufficient NGN balance
         })
         .mockResolvedValueOnce({
           ...mockWallet,
           currency: 'USD',
-          balance: 100
+          balance: 1000
         });
 
       const result = await service.tradeCurrency(mockUser.id, {
@@ -225,13 +247,17 @@ describe('WalletService', () => {
 
       expect(result).toHaveProperty('message', 'Trade executed successfully');
       expect(result).toHaveProperty('side', TradeSide.SELL);
+      expect(result).toHaveProperty('baseAmount');
+      expect(result).toHaveProperty('quoteAmount');
+      expect(result).toHaveProperty('rate');
     });
 
     it('should throw if insufficient balance for trade', async () => {
       mockQueryRunner.manager.findOneOrFail.mockResolvedValue(mockUser);
       mockQueryRunner.manager.findOne.mockResolvedValue({
         ...mockWallet,
-        balance: 500
+        currency: 'USD',
+        balance: 10 // Insufficient balance
       });
 
       await expect(
