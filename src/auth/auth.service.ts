@@ -43,15 +43,10 @@ async sendOtpEmail(email: string) {
         await this.otpRepo.save(this.otpRepo.create({ email, otp }));
 
         const transporter = nodemailer.createTransport({
-            host: this.config.get('EMAIL_HOST'),
-            port: this.config.get('EMAIL_PORT'),
-            secure: false, // Use TLS
+            service: 'gmail',  // Use Gmail service
             auth: {
                 user: this.config.get('EMAIL_USER'),
-                pass: this.config.get('EMAIL_PASS'),
-            },
-            tls: {
-                rejectUnauthorized: process.env.NODE_ENV === 'production'
+                pass: this.config.get('EMAIL_PASS') // Use Gmail App Password
             }
         });
 
