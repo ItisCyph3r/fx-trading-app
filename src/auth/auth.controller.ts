@@ -39,7 +39,6 @@ export class AuthController {
   @Post('logout')
   @UseGuards(JwtAuthGuard)
   async logout(@Req() req: RequestWithUser) {
-    console.log(req.user)
     if (!req.user?.userId) {
       throw new UnauthorizedException('Invalid token');
     }
