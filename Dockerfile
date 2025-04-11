@@ -12,9 +12,11 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Copy source code and environment files
+# Copy source code
 COPY . .
-COPY .env.production .env
+
+# Copy environment file if it exists, otherwise create empty one
+RUN touch .env
 
 # Build the app
 RUN npm run build
