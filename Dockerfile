@@ -15,7 +15,7 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Copy environment file if it exists, otherwise create empty one
+# Create empty env file for cloud deployments
 RUN touch .env
 
 # Build the app
