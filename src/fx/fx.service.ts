@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { MoreThan, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
@@ -26,7 +26,7 @@ export class FxService {
     if (!currencyRegex.test(base) || !currencyRegex.test(target)) {
         throw new BadRequestException('Invalid currency code format');
     }
-    
+
     // Try Redis cache first
     const cacheKey = `fx_rate:${base}:${target}`;
     const cachedRate = await this.cacheManager.get<number>(cacheKey);
