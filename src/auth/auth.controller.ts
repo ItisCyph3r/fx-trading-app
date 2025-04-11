@@ -1,8 +1,16 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Req, UseGuards, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { ResendOtpDto, VerifyOtpDto } from './dto/verify-otp.dto';
 import { LoginDto } from './dto/login.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+
+interface RequestWithUser extends Request {
+  user?: {
+    userId: string;
+    role: string;
+  };
+}
 
 @Controller('auth')
 export class AuthController {
@@ -28,5 +36,13 @@ export class AuthController {
         return this.authService.resendOtp(data);
     }
 
-  
+  @Post('logout')
+  @UseGuards(JwtAuthGuard)
+  async logout(@Req() req: RequestWithUser) {
+    console.log(req.user)
+    if (!req.user?.userId) {
+      throw new UnauthorizedException('Invalid token');
+    }
+    return this.authService.logout(req.user.userId);
+  }
 }

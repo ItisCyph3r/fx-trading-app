@@ -12,3 +12,4 @@ export const redisConfig = async (
   password: configService.get('REDIS_PASSWORD'),
   ttl: 60 * 60 * 24, // 24 hours
 });
+

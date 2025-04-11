@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtBlacklistGuard } from './common/guards/jwt-blacklist.guard';
 
 // Import the necessary modules
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { WalletModule } from './wallet/wallet.module';
-// import { FxModule } from './fx/fx.module';
 import { TransactionModule } from './transactions/transaction.module';
 
 // Import HttpModule from @nestjs/axios (NOT HttpService)
@@ -20,7 +21,9 @@ import { AppController } from './app.controller';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: process.env.NODE_ENV === 'production' ? '.env.production' : '.env'
+    ConfigModule.forRoot({ 
+      isGlobal: true, 
+      envFilePath: process.env.NODE_ENV === 'production' ? '.env.production' : '.env'
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -40,6 +43,12 @@ import { AppController } from './app.controller';
     TransactionModule,
     HttpModule,
   ],
-  controllers: [AppController]
+  controllers: [AppController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtBlacklistGuard,
+    },
+  ],
 })
 export class AppModule {}
