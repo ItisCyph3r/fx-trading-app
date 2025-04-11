@@ -8,7 +8,7 @@ export const typeOrmConfig = async (
 
   return {
     type: 'postgres',
-    host: isProduction ? 'postgres' : configService.get('DB_HOST'),
+    host: configService.get('DB_HOST'),
     port: configService.get<number>('DB_PORT'),
     username: configService.get('DB_USERNAME'),
     password: configService.get('DB_PASSWORD'),
