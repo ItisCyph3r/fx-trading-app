@@ -8,16 +8,14 @@ export const typeOrmConfig = async (
 
   return {
     type: 'postgres',
-    host: configService.get('DB_HOST'),
+    host: isProduction ? 'postgres' : configService.get('DB_HOST'),
     port: configService.get<number>('DB_PORT'),
     username: configService.get('DB_USERNAME'),
     password: configService.get('DB_PASSWORD'),
     database: configService.get('DB_NAME'),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     synchronize: !isProduction,
-    ssl: isProduction ? {
-      rejectUnauthorized: false
-    } : false,  // Disable SSL in non-production environments
+    ssl: false,
     extra: {
       max: 20,
       connectionTimeoutMillis: 10000

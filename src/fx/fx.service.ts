@@ -19,32 +19,14 @@ export class FxService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
-  // async getRate(base: string, target: string): Promise<number> {
-  //   const now = new Date();
-  //   const validFrom = subMinutes(now, CACHE_TTL_MINUTES);
-
-  //   const cached = await this.fxRepo.findOne({
-  //     where: { base, target, fetchedAt: MoreThan(validFrom) },
-  //     order: { fetchedAt: 'DESC' },
-  //   });
-
-  //   if (cached) return Number(cached.rate);
-
-  //   const apiKey = this.configService.get('FX_API_KEY');
-  //   const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${base}`;
-
-  //   const res = await this.http.axiosRef.get(url);
-  //   const rate = res.data?.conversion_rates?.[target];
-
-  //   if (!rate) throw new Error(`Rate for ${base}/${target} not found`);
-
-  //   await this.fxRepo.save(this.fxRepo.create({ base, target, rate }));
-
-  //   return rate;
-  // }
-
-
   async getRate(base: string, target: string): Promise<number> {
+    
+    // Validate currency codes
+    const currencyRegex = /^[A-Z]{3}$/;
+    if (!currencyRegex.test(base) || !currencyRegex.test(target)) {
+        throw new BadRequestException('Invalid currency code format');
+    }
+    
     // Try Redis cache first
     const cacheKey = `fx_rate:${base}:${target}`;
     const cachedRate = await this.cacheManager.get<number>(cacheKey);

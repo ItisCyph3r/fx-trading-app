@@ -77,68 +77,107 @@ import { TradeCurrencyDto, TradeSide } from './dto/trade.dto';
     }
 
     async convertCurrency(userId: string, dto: ConvertCurrencyDto) {
-        if (dto.fromCurrency === dto.toCurrency) {
+      // Validate currencies
+      const supportedCurrencies = ['USD', 'NGN', 'EUR', 'GBP'];
+      if (!supportedCurrencies.includes(dto.fromCurrency)) {
+          throw new BadRequestException(`Unsupported currency: ${dto.fromCurrency}`);
+      }
+      if (!supportedCurrencies.includes(dto.toCurrency)) {
+          throw new BadRequestException(`Unsupported currency: ${dto.toCurrency}`);
+      }
+  
+      // Check if same currency
+      if (dto.fromCurrency === dto.toCurrency) {
           throw new BadRequestException('Cannot convert to same currency');
-        }
-      
-        const queryRunner = this.dataSource.createQueryRunner();
-        await queryRunner.connect();
-        await queryRunner.startTransaction();
-      
-        try {
+      }
+  
+      const queryRunner = this.dataSource.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+  
+      try {
+          // Get user
           const user = await queryRunner.manager.findOneOrFail(User, {
-            where: { id: userId },
+              where: { id: userId },
           });
-      
+  
+          // Check source wallet
           const fromWallet = await queryRunner.manager.findOne(Wallet, {
-            where: { user: { id: userId }, currency: dto.fromCurrency },
+              where: { user: { id: userId }, currency: dto.fromCurrency },
           });
-      
+  
+          // Validate balance
           if (!fromWallet || Number(fromWallet.balance) < dto.amount) {
-            throw new BadRequestException('Insufficient balance');
+              throw new BadRequestException(`Insufficient ${dto.fromCurrency} balance`);
           }
-      
-          const rate = await this.fxService.getRate(dto.fromCurrency, dto.toCurrency);
+  
+          // Get conversion rate
+          let rate;
+          try {
+              rate = await this.fxService.getRate(dto.fromCurrency, dto.toCurrency);
+          } catch (error) {
+              throw new BadRequestException(`Failed to get rate for ${dto.fromCurrency}/${dto.toCurrency}`);
+          }
+  
+          // Calculate converted amount with 4 decimal precision
           const convertedAmount = Number((dto.amount * rate).toFixed(4));
-      
+  
+          // Get or create destination wallet
           let toWallet = await queryRunner.manager.findOne(Wallet, {
-            where: { user: { id: userId }, currency: dto.toCurrency },
+              where: { user: { id: userId }, currency: dto.toCurrency },
           });
-      
+  
           if (!toWallet) {
-            toWallet = this.walletRepo.create({
-              user,
-              currency: dto.toCurrency,
-              balance: 0,
-            });
+              toWallet = this.walletRepo.create({
+                  user,
+                  currency: dto.toCurrency,
+                  balance: 0,
+              });
           }
-      
+  
+          // Update balances
           fromWallet.balance = Number(fromWallet.balance) - dto.amount;
           toWallet.balance = Number(toWallet.balance) + convertedAmount;
-      
+  
+          // Save wallet changes
           await queryRunner.manager.save([fromWallet, toWallet]);
-      
+  
+          // Record transaction
           await this.txService.createTransaction(queryRunner, {
-            user,
-            amount: dto.amount,
-            currency: dto.fromCurrency,
-            type: 'CONVERSION',
-            status: 'SUCCESS',
-            note: `Converted to ${convertedAmount} ${dto.toCurrency}`,
-            fromCurrency: dto.fromCurrency,  // Add this
-            toCurrency: dto.toCurrency,      // Add this
-            rate: rate, // Add this   
+              user,
+              amount: dto.amount,
+              currency: dto.fromCurrency,
+              type: 'CONVERSION',
+              status: 'SUCCESS',
+              note: `Converted ${dto.amount} ${dto.fromCurrency} to ${convertedAmount} ${dto.toCurrency}`,
+              fromCurrency: dto.fromCurrency,
+              toCurrency: dto.toCurrency,
+              rate: rate,
           });
-      
+  
+          // Commit transaction
           await queryRunner.commitTransaction();
-          return { message: 'Conversion successful', rate, convertedAmount };
-        } catch (err) {
+  
+          return {
+              message: 'Conversion successful',
+              rate,
+              fromAmount: dto.amount,
+              toAmount: convertedAmount,
+              fromCurrency: dto.fromCurrency,
+              toCurrency: dto.toCurrency
+          };
+      } catch (err) {
+          // Rollback on error
           await queryRunner.rollbackTransaction();
-          throw err;
-        } finally {
+          if (err instanceof BadRequestException) {
+              throw err;
+          }
+          throw new BadRequestException(err.message || 'Currency conversion failed');
+      } finally {
+          // Release resources
           await queryRunner.release();
-        }
-    }
+      }
+  }
 
 
     async tradeCurrency(userId: string, dto: TradeCurrencyDto) {
